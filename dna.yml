@@ -1,0 +1,10 @@
+name: "meross_local_control"
+type: "neuron"
+author: ""
+
+kalliope_supported_version:
+  - 0.5
+
+tags:
+  - 'meross'
+  - 'home automation'

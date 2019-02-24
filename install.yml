@@ -1,0 +1,7 @@
+- name: Kalliope meross_local_control neuron install
+  hosts: localhost
+  gather_facts: no
+  connection: local
+  become: false
+
+  tasks: []
