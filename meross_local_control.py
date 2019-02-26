@@ -32,6 +32,7 @@ class Meross_local_control(NeuronModule):
         self.port = kwargs.get('port', 1883)
         self.uuid = kwargs.get('uuid', None)
         self.enabled = kwargs.get('enabled', None)
+        self.toggleX = kwargs.get('toggleX', False)
         self.qos = kwargs.get('qos', 0)
         self.retain = kwargs.get('retain', False)
         self.client_id = kwargs.get('client_id', 'kalliope')
@@ -67,19 +68,21 @@ class Meross_local_control(NeuronModule):
             sigHash.update(toHash.encode('utf8'))
             self.signature = sigHash.hexdigest().lower()
 
+            self.namespace = 'Appliance.Control.Toggle' + ('X' if self.toggleX else '')
+            self.toggleKey = 'toggle' + ('x' if self.toggleX else '')
             self.payload = {
                     'header': {
                         'from': client_resp_topic,
                         'messageId': self.messageId,
                         'method': 'SET',
-                        'namespace': 'Appliance.Control.Toggle',
+                        'namespace': self.namespace,
                         'payloadVersion': 1,
                         'sign': self.signature,
                         'timestamp': self.timestamp
                     },
                     'payload': {
                         'channel': 0,
-                        'toggle': {
+                        self.toggleKey: {
                             'onoff': 1 if self.enabled else 0
                         }
                     }
